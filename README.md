@@ -1,4 +1,4 @@
-# gxemm
+# GxEMM
 R package to fit GxEMM,  a linear mixed model for polygenic GxE.
 
 GxEMM can estimate the heritability specifc to individual environmental variables. GxEMM supports continuous and discrete environmental variables and traits. The "E" can be any context variable, including other genotypes (GxG) or inferred subtypes (for subtype-specific genetic components).
