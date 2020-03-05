@@ -83,5 +83,5 @@ Waldtest( T %*% out_diag$sig2s[4:5], T %*% out_diag$sig2Var[4:5,4:5] %*% T )
 
 ### tests for any heterogeneity in variance using Free model
 T <- cbind( c(1,0,0,0), c(0,1,0,0), c(0,0,1,-1) )
-MVWaldtest( T %*% out_diag$sig2s[2:5], t(T) %*% out_diag$sig2Var[2:5,2:5] %*% T )
+MVWaldtest( t(T) %*% out_diag$sig2s[2:5], t(T) %*% out_diag$sig2Var[2:5,2:5] %*% T )
 ```
