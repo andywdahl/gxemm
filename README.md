@@ -30,16 +30,18 @@ Z   <- cbind( Z1, 1-Z1 ) ### two discrete environments
 snps  <- scale( matrix( rbinom(N*S,2,.1), N, S ) )
 K     <- snps %*% t(snps) / S
 
-X     <- rnorm( N ) # dummy covariates for fixed effects. Should not include Z! Fixed effects of Z are added internally by GxEMM
+X     <- rnorm( N ) # fixed effect covariates. Should not include Z! Fixed effects of Z are added internally by GxEMM
 
+#genetic variances--assumed heterogeneous in this simulation
 sig2hom <- 0
 sig2het <- c( .1, .4 )
 
+# noise--assumed homogeneous in this simulation
 epsilon	<- sqrt(1-sig2hom-sum( colMeans( Z^2 ) * sig2het )) * rnorm(N)
 
 # heterogeneous SNP effects--details of this expression are not so important
-allbetas	<- sapply( sig2het, function(sig) rnorm( S, sd=sqrt( sig/S ) ) )
-uhet	<- sapply( 1:nrow(Z), function(i) snps[i,] %*% ( allbetas %*% Z[i,] ) )
+betas	<- sapply( sig2het, function(sig) rnorm( S, sd=sqrt( sig/S ) ) )
+uhet	<- sapply( 1:nrow(Z), function(i) snps[i,] %*% ( betas %*% Z[i,] ) )
 
 y   <- as.numeric( uhet + epsilon )
 ```
@@ -56,7 +58,6 @@ out_diag	<- GxEMM( y, X, K, Z, gtype='free', etype='free', ldak_loc=ldak_loc )
 
 Now that we've run the core three models, we can compare them:
 ```R
-
 ### test whether there is any heritability assuming the Hom model
 Waldtest( out_hom$h2, out_hom$h2Covmat[1,1] )   
 
@@ -74,7 +75,7 @@ In the Free model, the focus is on the vector of all environment-specific geneti
 
 ## Additional tests
 
-In general, many more tests can be performed and may be useful. For example:
+In general, many other tests can be performed that may be useful. For example:
 ```R
 ### tests for non-genetic heterogeneity in variance using Free model
 T <- c(1,-1)
