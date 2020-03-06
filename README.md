@@ -21,6 +21,7 @@ R CMD INSTALL GxEMM_1.0.tar.gz
 
 First, I'll simulate some test data. The details are not important for understanding how to use the package:
 ```R
+set.seed(1234)
 N <- 1e3 # sample size
 S <- 1e2 # number SNPs
 
