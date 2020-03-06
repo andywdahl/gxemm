@@ -12,7 +12,7 @@ GxEMM depends on LDAK to fit REML. We have included a version that is compatible
 
 Speed, Hemani, Johson and Balding. “Improved Heritability Estimation from Genome-wide SNPs”. The American Journal of Human Genetics 91.6 (Dec. 2012), pp. 1011–1021.
 
-For further information on LDAK and the most current version, see http://dougspeed.com/
+For compatability with GxEMM, you should use the version of LDAK included here. For further information on LDAK and the most current version, see http://dougspeed.com/
 
 ## Installation
 R CMD INSTALL GxEMM_1.0.tar.gz
