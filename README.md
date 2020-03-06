@@ -21,8 +21,8 @@ R CMD INSTALL GxEMM_1.0.tar.gz
 
 First, I'll simulate some test data. The details are not important for understanding how to use the package:
 ```R
-N <- 3e3 # sample size
-S <- 1e4 # number SNPs
+N <- 1e3 # sample size
+S <- 1e2 # number SNPs
 
 Z1  <- rbinom( N, 1, .5 )
 Z   <- cbind( Z1, 1-Z1 ) ### two discrete environments
