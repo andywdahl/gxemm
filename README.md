@@ -79,10 +79,10 @@ In the Free model, the focus is on the vector of all environment-specific geneti
 In general, many other tests can be performed that may be useful. For example:
 ```R
 ### tests for non-genetic heterogeneity in variance using Free model
-T <- c(1,-1)
-Waldtest( T %*% out_diag$sig2s[4:5], T %*% out_diag$sig2Var[4:5,4:5] %*% T )
+### Because Z is discrete and there are 2 environments, sig2s[4]+sig2s[5] = sig2e[1], and sig2s[5]=sig2e[2]
+### Contact Andy Dahl if studying a different Z and parameterization is too complicated
+Waldtest( out_diag$sig2s[4], out_diag$sig2Var[4,4] )
 
 ### tests for any heterogeneity in variance using Free model
-T <- cbind( c(1,0,0,0), c(0,1,0,0), c(0,0,1,-1) )
-MVWaldtest( t(T) %*% out_diag$sig2s[2:5], t(T) %*% out_diag$sig2Var[2:5,2:5] %*% T )
+MVWaldtest( out_diag$sig2s[2:4], out_diag$sig2Var[2:4,2:4] )
 ```
