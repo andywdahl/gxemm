@@ -54,7 +54,7 @@ library(GxEMM)
 ldak_loc  <- "~/GxEMM/code/ldak5.linux "
 out_hom		<- GxEMM( y, X, K, Z, gtype='hom', ldak_loc=ldak_loc )
 out_iid		<- GxEMM( y, X, K, Z, gtype='iid', ldak_loc=ldak_loc ) ### need to add etype='iid' for non-discrete environments
-out_diag	<- GxEMM( y, X, K, Z, gtype='free', etype='free', ldak_loc=ldak_loc )
+out_free	<- GxEMM( y, X, K, Z, gtype='free', etype='free', ldak_loc=ldak_loc )
 ```
 
 Now that we've run the core three models, we can compare them:
@@ -66,7 +66,7 @@ Waldtest( out_hom$h2, out_hom$h2Covmat[1,1] )
 Waldtest( out_iid$h2[2], out_iid$h2Covmat[2,2] )
 
 ### tests for genetic heterogeneity using Free model
-MVWaldtest( out_diag$sig2s[2:3], out_diag$sig2Var[2:3,2:3] ) 
+MVWaldtest( out_free$sig2s[2:3], out_free$sig2Var[2:3,2:3] ) 
 ```
 The details for these tests can be found in the ASHG paper. But the idea is to test whether key variance components are nonzero for each of these three models. In the Hom model, the focus is on the overall genetic variance. 
 
@@ -81,8 +81,8 @@ In general, many other tests can be performed that may be useful. For example:
 ### tests for non-genetic heterogeneity in variance using Free model
 ### Because Z is discrete and there are 2 environments, sig2s[4]+sig2s[5] = sig2e[1], and sig2s[5]=sig2e[2]
 ### Contact Andy Dahl if studying a different Z and parameterization is too complicated
-Waldtest( out_diag$sig2s[4], out_diag$sig2Var[4,4] )
+Waldtest( out_free$sig2s[4], out_free$sig2Var[4,4] )
 
 ### tests for any heterogeneity in variance using Free model
-MVWaldtest( out_diag$sig2s[2:4], out_diag$sig2Var[2:4,2:4] )
+MVWaldtest( out_free$sig2s[2:4], out_free$sig2Var[2:4,2:4] )
 ```
