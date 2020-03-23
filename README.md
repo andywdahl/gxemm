@@ -64,6 +64,7 @@ Waldtest( out_iid$h2[2], out_iid$h2Covmat[2,2] )
 MVWaldtest( out_free$sig2s[2:3], out_free$sig2Var[2:3,2:3] ) 
 ```
 The details for these tests can be found in the AJHG paper. But the idea is to test whether key variance components are nonzero for each of these three models:
+
 Markup : * In the Hom model, the focus is on the overall genetic variance. 
           * In the IID model, the focus is on the single parameter that summarizes heterogeneous genetic variance that is shared, in magnitude, across all environments.
           * In the Free model, the focus is on the vector of all environment-specific genetic variances, and the test is whether any is nonzero. 
