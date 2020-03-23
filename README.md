@@ -69,7 +69,7 @@ The details for these tests can be found in the AJHG paper. But the idea is to t
 * In the IID model, the focus is on the single parameter that summarizes heterogeneous genetic variance that is shared, in magnitude, across all environments.
 * In the Free model, the focus is on the vector of all environment-specific genetic variances, and the test is whether any is nonzero. 
 
-## Additional tests
+### Additional tests
 
 In general, many other tests can be performed that may be useful. For example:
 ```R
