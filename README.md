@@ -31,7 +31,7 @@ Z   <- cbind( Z1, 1-Z1 ) ### two discrete environments
 snps  <- scale( matrix( rbinom(N*S,2,.1), N, S ) )
 K     <- snps %*% t(snps) / S
 
-X     <- rnorm( N ) # fixed effect covariates. Should not include Z! Fixed effects of Z are added internally by GxEMM
+X     <- Z[,-1] # fixed effect covariates. Must include Z! Column is dropped here so that cbind(1,X) is full rank
 
 #genetic variances--assumed heterogeneous in this simulation
 sig2hom <- 0
@@ -44,7 +44,7 @@ epsilon	<- sqrt(1-sig2hom-sum( colMeans( Z^2 ) * sig2het )) * rnorm(N)
 betas	<- sapply( sig2het, function(sig) rnorm( S, sd=sqrt( sig/S ) ) )
 uhet	<- sapply( 1:nrow(Z), function(i) snps[i,] %*% ( betas %*% Z[i,] ) )
 
-y   <- as.numeric( uhet + epsilon )
+y   <- as.numeric( Z %*% c(.1,-.5) + uhet + epsilon )
 ```
 
 Now that the test data has been simulated, we need to run the three GxEMM models. Note you need to point GxEMM to the location of LDAK on your computer, and the location I've used here won't work for you:
