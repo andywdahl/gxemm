@@ -38,7 +38,6 @@ extract_ldak	<- function( pcgc, outdir, ws, r ){
 		sig2ses	<- as.numeric( as.character( out[which( out[,1] %in% paste0( 'Her_K', 1:r ) ),3] ) )
 		rm( out )
 
-		#I think this is how to handle binary traits, but I'm not certain for the case of environment-specific noise levels. It works in simulations.
 		sig2s		<- c( sig2s, 1-sum(sig2s) )
 		sig2ses	<- c( sig2ses, 0 )
 
