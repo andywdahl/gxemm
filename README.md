@@ -71,11 +71,11 @@ The details for these tests can be found in the AJHG paper. But the idea is to t
 
 ### Additional tests
 
-In general, many other tests can be performed that may be useful. For example:
+We have implemented a few other tests that can be useful for understanding the structure of the GxE parameters.
 ```R
 ### tests for non-genetic heterogeneity in variance using Free model
 ### Because Z is discrete and there are 2 environments, sig2s[4]+sig2s[5] = sig2e[1], and sig2s[5]=sig2e[2]
-### Contact Andy Dahl if studying a different Z and parameterization is too complicated
+### Note that parameterizing this is messy for non-discrete environments, see the ajhg 2020 paper
 Waldtest( out_free$sig2s[4], out_free$sig2Var[4,4] )
 
 ### tests for any heterogeneity in variance using Free model
