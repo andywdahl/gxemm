@@ -1,4 +1,4 @@
-GxEMM_HE	<- function( y, X=NULL, K, Z=NULL, gtype=c('hom','iid','free')[1], etype=c('hom','free')[1], use_diag=TRUE ){
+GxEMM_HE	<- function( y, X=NULL, K, Z=NULL, Ztype=c('disc','quant'), gtype=c('hom','iid','free')[1], etype=c('hom','free')[1], use_diag=TRUE ){
 
 	Z		<- as.matrix(Z)
 	X		<- as.matrix(X)
@@ -17,25 +17,25 @@ GxEMM_HE	<- function( y, X=NULL, K, Z=NULL, gtype=c('hom','iid','free')[1], etyp
 	rm(y,X,X_d); gc()
 
 	K.array	<- as.matrix( lowtri(K, PX, use_diag=use_diag) )
-
-	if( gtype == 'iid' )
+	if( gtype == 'iid' ){
 		K.array		<- cbind( K.array, lowtri( K * (Z %*% t(Z)), PX, use_diag=use_diag ) )
-
-	if( gtype == 'free' )
+	} else if( gtype == 'free' ){
 		for( k in 1:K0 )
 			K.array	<- cbind( K.array, lowtri( K * (Z[,k,drop=F] %*% t(Z[,k,drop=F])), PX, use_diag=use_diag ) )
-
+	}
 	rm(K); gc()
-	if( etype == 'free' )
-		for( k in 1:(K0-1) )
-			K.array	<- cbind( K.array, lowtri( diag( as.numeric( Z[,k]^2 ) ), PX, use_diag=use_diag ) )
 
+	if( etype == 'iid' & Ztype == 'disc' ){
+		K.array		<- cbind( K.array, lowtri( diag(diag(Z %*% t(Z))), PX, use_diag=use_diag ) )
+	} else if( etype == 'free' )
+		for( k in 1:ifelse( Ztype == 'disc', K0-1, K0 ) )
+			K.array	<- cbind( K.array, lowtri( diag( as.numeric( Z[,k]^2 ) ), PX, use_diag=use_diag ) )
 	K.array			<- cbind( K.array, lowtri(diag(nrow(K)), PX, use_diag=use_diag) )
 	rm( PX ); gc()
 
 	sig2s		<- solve( t(K.array) %*% K.array ) %*% ( t(K.array) %*% y.array )
 
-	sig2out	<- sig2map( sig2s, gtype, etype, K0, binary=FALSE )
+	sig2out	<- sig2map_HE( sig2s, gtype, etype, K0, disc_Z=disc_Z )
 
 	list( h2=sig2out$h2, sig2g=sig2out$sig2g, sig2e=sig2out$sig2e, df=ncol(K.array), sig2s=sig2s, ll=NA, h2Covmat=NA, sig2Var=NA, betas=betas )
 }
@@ -49,15 +49,3 @@ lowtri	<- function(V,PX,use_diag=TRUE){
 		return(  V[lower.tri(V,diag=FALSE)])
 	}
 }
-	#KKi.tK	<- solve( t(K.array) %*% K.array ) %*% t(K.array)
-	#betas		<- KKi.tK %*% yout
-	#beta.ps	<- rowMeans( sapply( 1:nperm, function(xx){
-	#	y		<- sample(y,replace=F)
-	#	abs(betas) > abs( KKi.tK %*% lowtri( y %*% t(y) )$x )
-	#}))
-
-	## if( etype == 'free' ){
-	## 	nbet	<- length(betas)
-	## 	betas[(nbet-K0):(nbet-1)]	<- betas[(nbet-K0):(nbet-1)] - betas[nbet]
-	## 	#betas[(nbet-(K0-1)):(nbet-1)]	<- betas[(nbet-K0):(nbet-1)] - betas[nbet]
-	## }
